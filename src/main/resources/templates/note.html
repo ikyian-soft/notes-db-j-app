@@ -2,15 +2,24 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Notes DB</title>
+    <title th:text="#{app.title}"></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body>
     <div class="container mt-2">
         <h2 class="row">
-            <div th:if="${mode} == 'create'" class="title col-9">Notes DB: Create Note</div>
-            <div th:if="${mode} == 'edit'" class="title col-9">Notes DB: Edit Note</div>
-            <div th:if="${mode} == 'delete'" class="title col-9">Notes DB: Delete Note</div>
+            <div th:if="${mode} == 'create'" class="title col-9">
+                <span th:text="#{app.title}"></span>
+                <span>: Create Note</span>
+            </div>
+            <div th:if="${mode} == 'edit'" class="title col-9">
+                <span th:text="#{app.title}"></span>
+                <span>: Edit Note</span>
+            </div>
+            <div th:if="${mode} == 'delete'" class="title col-9">
+                <span th:text="#{app.title}"></span>
+                <span>: Delete Note</span>
+            </div>
         </h2>
 
         <form th:if="${mode} == 'create'" method="POST" th:action="@{/create}" th:object="${note}">
@@ -56,7 +65,7 @@
         </form>
         <form th:if="${mode} == 'delete'" method="POST" th:action="@{/delete/{id}(id=*{id})}" th:object="${note}">
             <div class="badge rounded-pill text-bg-danger">The Note ill be deleted.</div>
-            <div class="input-group">
+            <div class="input-group mt-2">
                 <span class="input-group-text">Title</span>
                 <textarea class="form-control"
                           name="title"
@@ -64,7 +73,7 @@
                           aria-label="Title of the note"
                           th:field="*{title}"></textarea>
             </div>
-            <div class="input-group">
+            <div class="input-group mt-2">
                 <span class="input-group-text">Content</span>
                 <textarea class="form-control"
                           name="content"
@@ -72,7 +81,7 @@
                           aria-label="Content of the note"
                           th:field="*{content}"></textarea>
             </div>
-            <div class="commands d-flex justify-content-end">
+            <div class="commands d-flex justify-content-end mt-2">
                 <a th:href="@{/}" class="btn btn-sm btn-secondary">cancel</a>
                 <input type="submit" value="delete" class="btn btn-sm btn-danger ms-2"/>
             </div>
