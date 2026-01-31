@@ -1,3 +1,4 @@
+USE `notes_db`;
 DROP TABLE IF EXISTS `authorities`;
 DROP TABLE IF EXISTS `notes`;
 DROP TABLE IF EXISTS `users`;
