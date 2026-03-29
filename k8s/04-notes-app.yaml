@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notes-db-j
+  labels:
+    app: notes-db-j
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notes-db-j
+  template:
+    metadata:
+      labels:
+        app: notes-db-j
+    spec:
+      containers:
+        - name: notes-db-j
+          image: ykyy/notes-db-j:1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SERVER_PORT
+              value: "8080"
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: db_url
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: db_user_name
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: db_user_password
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notes-db-j-svc
+spec:
+  type: NodePort
+  selector:
+    app: notes-db-j
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30000

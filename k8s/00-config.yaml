@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  db_host: mysql
+  db_port: "3306"
+  db_url: jdbc:mysql://mysql:3306/notes_db
+  db_root_password: rootpassword
+  db_user_name: appuser
+  db_user_password: apppassword
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    #NOTE: filled during deployment
+    path: ${DATA_DIR_PATH}

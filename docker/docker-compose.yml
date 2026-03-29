@@ -1,0 +1,45 @@
+name: mysql
+services:
+  db:
+    image: mysql:9.5
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - db-network
+
+  adminer:
+    image: adminer:5.4.1
+    container_name: sql-adminer
+    restart: always
+    ports:
+      - "8081:8080"
+    networks:
+      - db-network
+
+  notes:
+    image: notes-db-j:latest
+    container_name: notes-db-j-web
+    environment:
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/notes_db
+      SPRING_DATASOURCE_USERNAME: appuser
+      SPRING_DATASOURCE_PASSWORD: apppassword
+    ports:
+      - "8080:8080"
+    networks:
+      - db-network
+volumes:
+  mysql_data:
+
+networks:
+  db-network:
+    driver: bridge
